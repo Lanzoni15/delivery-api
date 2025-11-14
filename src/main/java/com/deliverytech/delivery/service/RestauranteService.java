@@ -1,25 +1,15 @@
 package com.deliverytech.delivery.service;
 
+import com.deliverytech.delivery.dto.RestauranteDTO;
 import com.deliverytech.delivery.Restaurante;
-import com.deliverytech.delivery.repository.RestauranteRepository;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
-@Service
-public class RestauranteService {
-
-    private final RestauranteRepository restauranteRepository;
-
-    public RestauranteService(RestauranteRepository restauranteRepository) {
-        this.restauranteRepository = restauranteRepository;
-    }
-
-    public List<Restaurante> listarTodos() {
-        return restauranteRepository.findAll();
-    }
-
-    public Restaurante salvar(Restaurante restaurante) {
-        return restauranteRepository.save(restaurante);
-    }
+public interface RestauranteService {
+    Restaurante cadastrar(RestauranteDTO dto);
+    Restaurante buscarPorId(Long id);
+    Page<Restaurante> listar(String categoria, Boolean ativo, Pageable pageable);
+    Restaurante atualizar(Long id, RestauranteDTO dto);
+    void toggleStatus(Long id);
+    java.math.BigDecimal calcularTaxaEntrega(Long restauranteId, String cep);
 }

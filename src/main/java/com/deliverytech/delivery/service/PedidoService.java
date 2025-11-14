@@ -1,25 +1,21 @@
 package com.deliverytech.delivery.service;
 
+import com.deliverytech.delivery.dto.ItemPedidoDTO;
+import com.deliverytech.delivery.dto.PedidoDTO;
 import com.deliverytech.delivery.Pedido;
-import com.deliverytech.delivery.repository.PedidoRepository;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import java.math.BigDecimal;
 import java.util.List;
 
-@Service
-public class PedidoService {
-
-    private final PedidoRepository pedidoRepository;
-
-    public PedidoService(PedidoRepository pedidoRepository) {
-        this.pedidoRepository = pedidoRepository;
-    }
-
-    public List<Pedido> listarTodos() {
-        return pedidoRepository.findAll();
-    }
-
-    public Pedido salvar(Pedido pedido) {
-        return pedidoRepository.save(pedido);
-    }
+public interface PedidoService {
+    Pedido criarPedido(PedidoDTO dto);
+    Pedido buscarPorId(Long id);
+    Page<Pedido> listar(Pageable pageable);
+    List<Pedido> buscarPorCliente(Long clienteId);
+    Page<Pedido> buscarPorRestaurante(Long restauranteId, Pageable pageable);
+    Pedido atualizarStatus(Long id);
+    BigDecimal calcularTotalPedido(List<ItemPedidoDTO> itens);
+    void cancelarPedido(Long id);
 }
