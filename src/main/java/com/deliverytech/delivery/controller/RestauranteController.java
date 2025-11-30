@@ -82,7 +82,6 @@ public class RestauranteController {
         return ResponseEntity.ok(ApiResponse.of(service.calcularTaxaEntrega(id, cep)));
     }
 
-    // proxímos por CEP — sample placeholder (real implementation would require geo)
     @GetMapping("/proximos/{cep}")
     public ResponseEntity<ApiResponse<List<Restaurante>>> proximos(@PathVariable String cep) {
         Page<Restaurante> p = service.listar(null, true, PageRequest.of(0, 50));

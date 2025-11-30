@@ -29,7 +29,6 @@ public class RelatorioController {
     public ResponseEntity<ApiResponse<?>> vendasPorRestaurante(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim) {
-        // placeholder: implement with @Query for aggregation
         return ResponseEntity.ok(ApiResponse.of(Map.of("message", "Relatório pronto - implementar agregação")));
     }
 

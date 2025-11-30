@@ -42,8 +42,8 @@ public class ProdutoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable Long id) {
-        service.buscarPorId(id); // throw if not exists
-        service.alterarDisponibilidade(id, false); // soft remove pattern
+        service.buscarPorId(id);
+        service.alterarDisponibilidade(id, false);
         return ResponseEntity.noContent().build();
     }
 
