@@ -2,13 +2,22 @@ package com.deliverytech.delivery.service;
 
 import com.deliverytech.delivery.dto.ClienteDTO;
 import com.deliverytech.delivery.Cliente;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface ClienteService {
+
     Cliente cadastrar(ClienteDTO dto);
+
     Cliente buscarPorId(Long id);
+
     Cliente buscarPorEmail(String email);
+
     Cliente atualizar(Long id, ClienteDTO dto);
-    void toggleStatus(Long id);
-    List<Cliente> listarAtivos();
+
+    void alterarStatus(Long id);
+
+    Page<Cliente> listarClientes(Pageable pageable);
+
+    Page<Cliente> listarAtivos(Pageable pageable);
 }

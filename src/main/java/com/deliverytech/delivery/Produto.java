@@ -1,8 +1,17 @@
 package com.deliverytech.delivery;
 
+import com.deliverytech.delivery.dto.ProdutoDTO;
 import jakarta.persistence.*;
+import lombok.*;
+
+import java.math.BigDecimal;
 
 @Entity
+@Table(name = "produtos")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Produto {
 
     @Id
@@ -10,29 +19,22 @@ public class Produto {
     private Long id;
 
     private String nome;
-    private Double preco;
 
-    @ManyToOne
-    @JoinColumn(name = "restaurante_id")
-    private Restaurante restaurante;
+    private BigDecimal preco;
 
-    public Produto() {}
+    private String categoria;
 
-    public Produto(String nome, Double preco, Restaurante restaurante) {
-        this.nome = nome;
-        this.preco = preco;
-        this.restaurante = restaurante;
+    private boolean disponivel = true;
+
+    @Column(name = "restaurante_id")
+    private Long restauranteId;
+
+    // Construtor que recebe o DTO
+    public Produto(ProdutoDTO dto) {
+        this.nome = dto.getNome();
+        this.preco = dto.getPreco();
+        this.categoria = dto.getCategoria();
+        this.disponivel = dto.isDisponivel();
+        this.restauranteId = dto.getRestauranteId();
     }
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
-
-    public Double getPreco() { return preco; }
-    public void setPreco(Double preco) { this.preco = preco; }
-
-    public Restaurante getRestaurante() { return restaurante; }
-    public void setRestaurante(Restaurante restaurante) { this.restaurante = restaurante; }
 }

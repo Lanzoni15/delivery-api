@@ -19,12 +19,16 @@ import java.util.List;
 public class PedidoController {
 
     private final PedidoService service;
-    public PedidoController(PedidoService service) { this.service = service; }
+
+    public PedidoController(PedidoService service) {
+        this.service = service;
+    }
 
     @PostMapping
     public ResponseEntity<ApiResponse<Pedido>> criar(@Valid @RequestBody PedidoDTO dto) {
         Pedido p = service.criarPedido(dto);
-        return ResponseEntity.created(URI.create("/api/pedidos/" + p.getId())).body(ApiResponse.of(p, "Pedido criado"));
+        return ResponseEntity.created(URI.create("/api/pedidos/" + p.getId()))
+                .body(ApiResponse.of(p, "Pedido criado"));
     }
 
     @GetMapping("/{id}")
@@ -33,16 +37,20 @@ public class PedidoController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<?>> listar(@RequestParam(required = false) String status,
-                                                 @RequestParam(defaultValue = "0") int page,
-                                                 @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<ApiResponse<?>> listar(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
         Pageable pageable = PageRequest.of(page, size);
-        var p = service.listar(pageable);
-        return ResponseEntity.ok(ApiResponse.of(p.getContent()));
+        var pedidos = service.listar(pageable);
+
+        return ResponseEntity.ok(ApiResponse.of(pedidos.getContent()));
     }
 
     @PatchMapping("/{id}/status")
-    public ResponseEntity<ApiResponse<Pedido>> atualizarStatus(@PathVariable Long id, @RequestParam String status) {
+    public ResponseEntity<ApiResponse<Pedido>> atualizarStatus(
+            @PathVariable Long id) {
+
         return ResponseEntity.ok(ApiResponse.of(service.atualizarStatus(id), "Status atualizado"));
     }
 
@@ -58,16 +66,20 @@ public class PedidoController {
     }
 
     @GetMapping("/restaurante/{restauranteId}")
-    public ResponseEntity<ApiResponse<?>> pedidosRestaurante(@PathVariable Long restauranteId,
-                                                             @RequestParam(defaultValue = "0") int page,
-                                                             @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<ApiResponse<?>> pedidosRestaurante(
+            @PathVariable Long restauranteId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
         Pageable pageable = PageRequest.of(page, size);
-        var p = service.buscarPorRestaurante(restauranteId, pageable);
-        return ResponseEntity.ok(ApiResponse.of(p.getContent()));
+        var pedidos = service.buscarPorRestaurante(restauranteId, pageable);
+
+        return ResponseEntity.ok(ApiResponse.of(pedidos.getContent()));
     }
 
     @PostMapping("/calcular")
-    public ResponseEntity<ApiResponse<java.math.BigDecimal>> calcularTotal(@Valid @RequestBody List<ItemPedidoDTO> itens) {
+    public ResponseEntity<ApiResponse<java.math.BigDecimal>> calcularTotal(
+            @Valid @RequestBody List<ItemPedidoDTO> itens) {
         return ResponseEntity.ok(ApiResponse.of(service.calcularTotalPedido(itens)));
     }
 }

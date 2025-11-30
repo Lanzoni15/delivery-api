@@ -18,12 +18,16 @@ import java.util.List;
 public class ProdutoController {
 
     private final ProdutoService service;
-    public ProdutoController(ProdutoService service) { this.service = service; }
+
+    public ProdutoController(ProdutoService service) {
+        this.service = service;
+    }
 
     @PostMapping
     public ResponseEntity<ApiResponse<Produto>> criar(@Valid @RequestBody ProdutoDTO dto) {
         Produto p = service.cadastrar(dto);
-        return ResponseEntity.created(URI.create("/api/produtos/" + p.getId())).body(ApiResponse.of(p, "Produto criado"));
+        return ResponseEntity.created(URI.create("/api/produtos/" + p.getId()))
+                .body(ApiResponse.of(p, "Produto criado"));
     }
 
     @GetMapping("/{id}")
@@ -51,9 +55,9 @@ public class ProdutoController {
 
     @GetMapping("/restaurante/{restauranteId}")
     public ResponseEntity<ApiResponse<List<Produto>>> porRestaurante(@PathVariable Long restauranteId,
-                                                                     @RequestParam(required = false) Boolean disponivel,
-                                                                     @RequestParam(defaultValue = "0") int page,
-                                                                     @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(required = false) Boolean disponivel,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         var pageResult = service.listarPorRestaurante(restauranteId, disponivel, pageable);
         return ResponseEntity.ok(ApiResponse.of(pageResult.getContent()));
@@ -61,8 +65,8 @@ public class ProdutoController {
 
     @GetMapping("/categoria/{categoria}")
     public ResponseEntity<ApiResponse<?>> porCategoria(@PathVariable String categoria,
-                                                       @RequestParam(defaultValue = "0") int page,
-                                                       @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
         var p = service.listarPorCategoria(categoria, PageRequest.of(page, size));
         return ResponseEntity.ok(ApiResponse.of(p.getContent()));
     }
